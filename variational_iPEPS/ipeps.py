@@ -38,23 +38,24 @@ class honeycombiPEPS(torch.nn.Module):
         
         if d == 8:
             A1symm = self.A1
-            # A2symm = self.A2
+            A2symm = self.A2
+
             A1symm = self.A1.reshape(2,2,2,D,D,D)
             A1symm = A1symm.permute(0,1,2, 3,4,5) +  A1symm.permute(1,2,0 , 4,5,3) +  A1symm.permute(2,0,1, 5,3,4) 
             A1symm = A1symm.reshape(8, D,D,D)
 
-            A2symm = A1symm
-            # A2symm = self.A2.reshape(2,2,2,D,D,D)
-            # A2symm = A2symm.permute(0,1,2, 3,4,5) +  A2symm.permute(1,2,0 , 4,5,3) +  A2symm.permute(2,0,1, 5,3,4) 
-            # A2symm = A2symm.reshape(8, D,D,D)
+            A2symm = self.A2.reshape(2,2,2,D,D,D)
+            A2symm = A2symm.permute(0,1,2, 3,4,5) +  A2symm.permute(1,2,0 , 4,5,3) +  A2symm.permute(2,0,1, 5,3,4) 
+            A2symm = A2symm.reshape(8, D,D,D)
+
+            A1symm = A1symm/A1symm.norm()
+            A2symm = A2symm/A2symm.norm()
+
+
         elif d==4:
             A1symm = self.A1
-            # A2symm = self.A2
+            A2symm = self.A2
             A1symm = A1symm.permute(0, 1,2,3) +  A1symm.permute(0 , 2,3,1) +  A1symm.permute(0, 3,1,2) 
-            # A2symm = A2symm.permute(0, 1,2,3) +  A2symm.permute(0 , 2,3,1) +  A2symm.permute(0, 3,1,2) 
-            A2symm = A1symm
-
-
 
         else:
             A1symm = self.A1.permute(0,1,2,3) +  self.A1.permute(0,2,3,1) + self.A1.permute(0,3,1,2) 
